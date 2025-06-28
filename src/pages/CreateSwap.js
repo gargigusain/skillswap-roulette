@@ -25,7 +25,7 @@ const CreateSwap = () => {
     }
 
     try {
-      const res = await fetch("http://localhost:5000/api/swaps", {
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/swaps`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -49,7 +49,9 @@ const CreateSwap = () => {
 
   return (
     <div className="max-w-xl mx-auto mt-16 bg-white p-8 rounded-2xl shadow-lg">
-      <h2 className="text-3xl font-bold text-center text-indigo-700 mb-6">🚀 Create a Skill Swap</h2>
+      <h2 className="text-3xl font-bold text-center text-indigo-700 mb-6">
+        🚀 Create a Skill Swap
+      </h2>
       {error && <p className="text-red-500 text-center mb-4">{error}</p>}
       <form onSubmit={handleSubmit} className="space-y-4">
         <input

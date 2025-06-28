@@ -2,7 +2,8 @@ import React, { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import io from "socket.io-client";
 
-const socket = io("http://localhost:5000");
+// ✅ Use environment variable or fallback
+const socket = io(process.env.REACT_APP_API_URL || "http://localhost:5000");
 
 const VideoCall = () => {
   const { state } = useLocation();

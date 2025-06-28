@@ -2,7 +2,8 @@ import React, { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import io from "socket.io-client";
 
-const socket = io("http://localhost:5000");
+// ✅ Use environment variable or fallback
+const socket = io(process.env.REACT_APP_API_URL || "http://localhost:5000");
 
 const VoiceCall = () => {
   const { state } = useLocation();
@@ -134,7 +135,9 @@ const VoiceCall = () => {
 
   return (
     <div className="p-6 flex flex-col items-center justify-center min-h-screen bg-gray-100">
-      <h2 className="text-3xl font-bold text-indigo-700 mb-8 text-center">🎧 Voice Call In Progress</h2>
+      <h2 className="text-3xl font-bold text-indigo-700 mb-8 text-center">
+        🎧 Voice Call In Progress
+      </h2>
 
       <div className="flex flex-col items-center mb-6">
         <audio ref={localAudioRef} autoPlay muted />

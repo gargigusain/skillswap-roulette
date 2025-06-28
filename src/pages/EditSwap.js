@@ -13,12 +13,13 @@ const EditSwap = () => {
   });
 
   const [loading, setLoading] = useState(true);
+  const API_URL = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
     const fetchSwap = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await fetch(`http://localhost:5000/api/swaps/${id}`, {
+        const res = await fetch(`${API_URL}/api/swaps/${id}`, {
           headers: { Authorization: token },
         });
 
@@ -42,7 +43,7 @@ const EditSwap = () => {
     };
 
     fetchSwap();
-  }, [id, navigate]);
+  }, [id, navigate, API_URL]);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -53,7 +54,7 @@ const EditSwap = () => {
     const token = localStorage.getItem("token");
 
     try {
-      const res = await fetch(`http://localhost:5000/api/swaps/${id}`, {
+      const res = await fetch(`${API_URL}/api/swaps/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

@@ -7,10 +7,12 @@ const BrowseSwaps = () => {
   const [filter, setFilter] = useState("");
   const navigate = useNavigate();
 
+  const API_BASE_URL = process.env.REACT_APP_API_URL || "https://skillswap-backend.onrender.com";
+
   const fetchSwaps = async () => {
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:5000/api/swaps", {
+      const res = await fetch(`${API_BASE_URL}/api/swaps`, {
         headers: {
           Authorization: token,
         },
@@ -35,7 +37,7 @@ const BrowseSwaps = () => {
 
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch(`http://localhost:5000/api/swaps/${id}`, {
+      const res = await fetch(`${API_BASE_URL}/api/swaps/${id}`, {
         method: "DELETE",
         headers: { Authorization: token },
       });

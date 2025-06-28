@@ -14,6 +14,8 @@ const Dashboard = () => {
   const [messages, setMessages] = useState([]);
   const chatEndRef = useRef(null);
 
+  const API_URL = process.env.REACT_APP_API_URL;
+
   const handleLogout = () => {
     localStorage.removeItem("isLoggedIn");
     localStorage.removeItem("token");
@@ -25,7 +27,7 @@ const Dashboard = () => {
     const token = localStorage.getItem("token");
     if (!token) return navigate("/login");
 
-    fetch("http://localhost:5000/api/auth/dashboard", {
+    fetch(`${API_URL}/api/auth/dashboard`, {
       headers: { Authorization: token },
     })
       .then((res) => res.json())
@@ -40,13 +42,13 @@ const Dashboard = () => {
         handleLogout();
       });
 
-    fetch("http://localhost:5000/api/swaps", {
+    fetch(`${API_URL}/api/swaps`, {
       headers: { Authorization: token },
     })
       .then((res) => res.json())
       .then((data) => setSwaps(data))
       .catch((err) => console.error("Error fetching swaps:", err));
-  }, [navigate]);
+  }, [navigate, API_URL]);
 
   useEffect(() => {
     socket.on("private_message", ({ from, message }) => {
