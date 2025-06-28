@@ -5,6 +5,7 @@ import io from "socket.io-client";
 // ✅ Use environment variable or fallback
 const socket = io(process.env.REACT_APP_API_URL || "http://localhost:5000");
 
+
 const VoiceCall = () => {
   const { state } = useLocation();
   const receiverId = state?.receiverId;

@@ -2,7 +2,11 @@ import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { getInitials } from "../utils/utils";
 import { motion, AnimatePresence } from "framer-motion";
-import socket from "../socket";
+import io from "socket.io-client";
+
+// ✅ Use environment variable or fallback
+const socket = io(process.env.REACT_APP_API_URL || "http://localhost:5000");
+
 
 const Dashboard = () => {
   const navigate = useNavigate();
