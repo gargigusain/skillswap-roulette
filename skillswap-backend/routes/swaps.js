@@ -1,8 +1,8 @@
+// routes/swaps.js
 const express = require("express");
 const router = express.Router();
 const Swap = require("../models/Swap");
-const verifyToken = require("../middleware/auth");
-
+const verifyToken = require("../middleware/authMiddleware"); // ✅ FIXED path
 // 📝 Create a new skill swap
 router.post("/", verifyToken, async (req, res) => {
   try {

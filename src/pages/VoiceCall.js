@@ -1,10 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import io from "socket.io-client";
-
-// ✅ Use environment variable or fallback
-const socket = io(process.env.REACT_APP_API_URL || "http://localhost:5000");
-
+import socket from "../socket"; // ✅ Reuse shared socket instance
 
 const VoiceCall = () => {
   const { state } = useLocation();
@@ -111,7 +107,6 @@ const VoiceCall = () => {
       socket.off("receive-offer");
       socket.off("receive-answer");
       socket.off("ice-candidate");
-      socket.disconnect();
 
       if (peerConnection.current) peerConnection.current.close();
       if (streamRef.current) {

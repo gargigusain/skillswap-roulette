@@ -6,7 +6,7 @@ const Login = () => {
   const navigate = useNavigate();
   const [form, setForm] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
-  const API_URL = process.env.REACT_APP_API_URL;
+  const API_URL = "http://localhost:5000";
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -14,12 +14,15 @@ const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setError("");
+
+    const { email, password } = form;
 
     try {
       const res = await fetch(`${API_URL}/api/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ email, password }), // ✅ Now both values are valid
       });
 
       const data = await res.json();
@@ -33,9 +36,10 @@ const Login = () => {
       localStorage.setItem("isLoggedIn", "true");
       localStorage.setItem("user", JSON.stringify(data.user));
 
-      toast.success("Logged in successfully!");
+      toast.success("✅ Logged in successfully!");
       navigate("/dashboard");
     } catch (err) {
+      console.error("❌ Login error:", err);
       setError("Something went wrong");
     }
   };
@@ -50,14 +54,16 @@ const Login = () => {
         <input
           name="email"
           type="email"
+          autoComplete="email"
           placeholder="Enter your email"
           className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
           onChange={handleChange}
           required
         />
         <input
-          name="password"
+          name="password" // ✅ Corrected here
           type="password"
+          autoComplete="current-password"
           placeholder="Enter your password"
           className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
           onChange={handleChange}

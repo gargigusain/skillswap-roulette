@@ -1,6 +1,9 @@
+// components/Navbar.js
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+
+const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000";
 
 const Navbar = () => {
   const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
@@ -22,7 +25,7 @@ const Navbar = () => {
 
     try {
       const res = await axios.get(
-        `http://localhost:5000/api/users/search?name=${searchQuery}`
+        `${API_URL}/api/users/search?name=${encodeURIComponent(searchQuery)}`
       );
       setResults(res.data);
     } catch (err) {
@@ -96,11 +99,13 @@ const Navbar = () => {
                   className="p-2 flex items-center gap-2 hover:bg-gray-100 cursor-pointer"
                 >
                   <img
-                    src={user.photo || "https://via.placeholder.com/40"}
+                    src={user?.photo || "https://via.placeholder.com/40"}
                     alt="User"
-                    className="w-8 h-8 rounded-full"
+                    className="w-10 h-10 rounded-full"
                   />
-                  <span className="font-medium">{user.username}</span>
+                  <span className="font-medium">
+                    {user.username || user.name}
+                  </span>
                 </div>
               ))}
             </div>

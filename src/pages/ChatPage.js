@@ -1,9 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import io from "socket.io-client";
-
-// ✅ Use environment variable or fallback to local
-const socket = io(process.env.REACT_APP_API_URL || "http://localhost:5000");
+import socket from "../socket"; // ✅ Reuse shared socket instance
 
 const ChatPage = () => {
   const { id: receiverId } = useParams();
@@ -15,16 +12,20 @@ const ChatPage = () => {
   useEffect(() => {
     if (!user) return;
 
+    // ✅ Register the current user
     socket.emit("register", user._id);
 
-    socket.on("private_message", ({ from, message }) => {
+    // ✅ Receive private messages
+    const messageListener = ({ from, message }) => {
       if (from === receiverId) {
         setChatLog((prev) => [...prev, { from, message }]);
       }
-    });
+    };
+
+    socket.on("private_message", messageListener);
 
     return () => {
-      socket.off("private_message");
+      socket.off("private_message", messageListener);
     };
   }, [receiverId, user]);
 
@@ -42,15 +43,11 @@ const ChatPage = () => {
   };
 
   const startVideoCall = () => {
-    navigate("/video-call", {
-      state: { receiverId },
-    });
+    navigate("/video-call", { state: { receiverId } });
   };
 
   const startVoiceCall = () => {
-    navigate("/voice-call", {
-      state: { receiverId },
-    });
+    navigate("/voice-call", { state: { receiverId } });
   };
 
   return (
